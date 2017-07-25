@@ -24,9 +24,20 @@ let insertDocument = (req, res) => {
   MongoClient.connect(url, (err, db) => {
     console.log('Connected to database');
     let col = db.collection('books');
-    col.insertOne({isbn:'978-1-60309-057-6', title:'Learning MongoDB', author:'JS', category:'Education', stock:1}, (err, doc) => {
+    let isbn = req.body.isbn
+    let title = req.body.title
+    let author = req.body.author
+    let category = req.body.category
+    let stock = req.body.stock
+    col.insertOne({
+      isbn: isbn,
+      title: title,
+      author: author,
+      category: category,
+      stock: stock
+    }, (err, doc) => {
       if(!err){
-        res.send('Data Successfully inserted')
+        res.send({ msg : 'Data Successfully inserted', doc})
       } else {
         res.status(500).send(err)
       }
