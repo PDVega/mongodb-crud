@@ -24,18 +24,7 @@ let insertDocument = (req, res) => {
   MongoClient.connect(url, (err, db) => {
     console.log('Connected to database');
     let col = db.collection('books');
-    let isbn = req.body.isbn
-    let title = req.body.title
-    let author = req.body.author
-    let category = req.body.category
-    let stock = req.body.stock
-    col.insertOne({
-      isbn: isbn,
-      title: title,
-      author: author,
-      category: category,
-      stock: stock
-    }, (err, doc) => {
+    col.insertOne(req.body, (err, doc) => {
       if(!err){
         res.send({ msg : 'Data Successfully inserted', doc})
       } else {
@@ -67,21 +56,8 @@ let editOne = (req, res) => {
     console.log('Connected to database');
     let col = db.collection('books');
     let id = req.params.id
-    let isbn = req.body.isbn
-    let title = req.body.title
-    let author = req.body.author
-    let category = req.body.category
-    let stock = req.body.stock
     col.updateOne({"_id": ObjectId(id) },
-    { $set: 
-      {
-      isbn: isbn,
-      title: title,
-      author: author,
-      category: category,
-      stock: stock 
-      } 
-    }, (err, result) => {
+    { $set: req.body }, (err, result) => {
       if(!err){
         res.send(result)
       } else {
